@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/futureRVDate"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="16dp"
+            android:text="2023-05-04  14:22"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/futureWeatherTempature"
+            android:layout_width="70dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="25dp"
+            android:text="25 "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/futureRVDate"
+            app:layout_constraintStart_toEndOf="@+id/futureRVDate"
+            app:layout_constraintTop_toTopOf="@+id/futureRVDate" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/futureRVAnimation"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="25dp"
+            app:layout_constraintBottom_toBottomOf="@+id/futureWeatherTempature"
+            app:layout_constraintStart_toEndOf="@+id/futureWeatherTempature"
+            app:layout_constraintTop_toTopOf="@+id/futureWeatherTempature"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
