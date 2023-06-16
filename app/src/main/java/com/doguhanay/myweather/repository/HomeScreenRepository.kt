@@ -16,7 +16,6 @@ class HomeScreenRepository @Inject constructor(private val apiService: ApiServic
         val baseUrl = "https://geocoding-api.open-meteo.com/v1/search"
 
         val completeUrl = "$baseUrl?name=$name&count=10&language=en&format=json"
-        Log.e("url",completeUrl)
         return apiService.searchLocation(completeUrl)
     }
 }

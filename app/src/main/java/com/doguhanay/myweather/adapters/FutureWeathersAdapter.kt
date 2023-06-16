@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.doguhanay.myweather.R
 import com.doguhanay.myweather.data.Hourly
 import com.doguhanay.myweather.databinding.FutureWeathersRvBinding
-import com.doguhanay.myweather.viewmodels.HomeScreenViewmodel
-import javax.inject.Inject
 
 class FutureWeathersAdapter () : RecyclerView.Adapter<FutureWeathersAdapter.WeatherViewHolder>() {
     private var weatherList: Hourly? = null
@@ -59,7 +57,4 @@ class FutureWeathersAdapter () : RecyclerView.Adapter<FutureWeathersAdapter.Weat
         }
     }
 
-
-   /* inner class WeatherViewHolder(futureWeatherListBinding: FutureWeathersRvBinding) :
-        RecyclerView.ViewHolder(futureWeatherListBinding.root)*/
 }

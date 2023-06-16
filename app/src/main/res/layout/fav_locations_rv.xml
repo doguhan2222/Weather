@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:id="@+id/favLocRV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/favLocButton"
+            android:layout_width="155dp"
+            android:layout_height="70dp"
+            android:clickable="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:background="@drawable/circle_fav_button"
+            android:layout_margin="15dp"/>
+
+    </LinearLayout>
+
+
+
+</layout>

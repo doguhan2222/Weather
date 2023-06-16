@@ -13,6 +13,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homeScreenLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_color"
@@ -61,7 +62,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favPlacesListRv"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
@@ -84,11 +86,11 @@
         <TextView
             android:id="@+id/cityNameTV"
             android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_height="80dp"
             android:layout_marginStart="52dp"
             android:layout_marginTop="16dp"
             android:paddingTop="7dp"
-            android:text="Deneme"
+            android:text="@={homeScreenVM.currentCityName}"
             android:textAlignment="center"
             android:textColor="#FF0000"
             android:textSize="25sp"
@@ -101,7 +103,22 @@
             android:layout_height="50dp"
             android:layout_marginStart="12dp"
             android:background="@null"
+            android:visibility="invisible"
             android:src="@drawable/not_fav_button"
+            android:onClick="@{() -> homeScreenVM.addFavVM()}"
+            app:layout_constraintBottom_toBottomOf="@+id/cityNameTV"
+            app:layout_constraintStart_toEndOf="@+id/cityNameTV"
+            app:layout_constraintTop_toTopOf="@+id/cityNameTV"
+            app:layout_constraintVertical_bias="0.0" />
+        <ImageButton
+            android:id="@+id/deleteFavImageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="12dp"
+            android:background="@null"
+            android:visibility="invisible"
+            android:src="@drawable/fav_button"
+            android:onClick="@{() -> homeScreenVM.deleteFavVM()}"
             app:layout_constraintBottom_toBottomOf="@+id/cityNameTV"
             app:layout_constraintStart_toEndOf="@+id/cityNameTV"
             app:layout_constraintTop_toTopOf="@+id/cityNameTV"

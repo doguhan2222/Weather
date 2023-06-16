@@ -9,4 +9,5 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
     fun inject(fragment:HomeScreen)
+
 }
