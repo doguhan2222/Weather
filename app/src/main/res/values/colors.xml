@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="backStart">#153A71</color>
+    <color name="backCenter">#DDA3E6</color>
+    <color name="backEnd">#153A71</color>
+
+    <color name="cirlePink1">#fa09ad</color>
+    <color name="circlePink2">#c20586</color>
 </resources>

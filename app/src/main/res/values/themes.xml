@@ -1,9 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+
     <style name="Base.Theme.Weather" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+
+
+    <style name="Theme.MoviesApp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme attributes here -->
+    </style>
+
+
+
+    <style name="Theme.Starting" parent="Theme.SplashScreen">
+
+
+        <item name="windowSplashScreenBackground">@color/backCenter</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.Weather</item>
+
+    </style>
+
+
+
     <style name="Theme.Weather" parent="Base.Theme.Weather" />
+
+
+
+
 </resources>

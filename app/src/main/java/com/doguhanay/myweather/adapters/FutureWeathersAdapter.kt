@@ -47,11 +47,45 @@ class FutureWeathersAdapter () : RecyclerView.Adapter<FutureWeathersAdapter.Weat
             time = timeDate.substring(11)
             futureWeatherListBinding.futureRVDate.text = date + " : "+ time
             futureWeatherListBinding.futureWeatherTempature.text = tempature
-            if ( code.equals("0")){
+            when (code.toInt()) {
+                0,1 -> {
+                    futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.sunny)
+                    futureWeatherListBinding.futureRVAnimation.playAnimation()
+                }
+                45,48 -> {
+                    futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.fog)
+                    futureWeatherListBinding.futureRVAnimation.playAnimation()            }
+                51,53,55,56,57,61,63,65,66,67,80,81,82 -> {
+                    futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.rain)
+                    futureWeatherListBinding.futureRVAnimation.playAnimation()
+                }
+                71,73,75,77,85,86 -> {
+                    futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.snow)
+                    futureWeatherListBinding.futureRVAnimation.playAnimation()
+                }
+                96,99 -> {
+                    futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.lightning)
+                    futureWeatherListBinding.futureRVAnimation.playAnimation()
+                }
+                3 -> {
+                    futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.cloudy)
+                    futureWeatherListBinding.futureRVAnimation.playAnimation()
+                }
+                2 -> {
+                    futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.sun_cloudy)
+                    futureWeatherListBinding.futureRVAnimation.playAnimation()
+                }
+                95 -> {
+                    futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.windy)
+                    futureWeatherListBinding.futureRVAnimation.playAnimation()
+                }
+
+            }
+           /* if ( code.equals("0")){
                 futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.sunny)
                 futureWeatherListBinding.futureRVAnimation.playAnimation()
             }
-
+*/
 
 
         }

@@ -1,6 +1,5 @@
 package com.doguhanay.myweather.repository
 
-import android.util.Log
 import com.doguhanay.myweather.data.ForecastResponse
 import com.doguhanay.myweather.data.Locations
 import com.doguhanay.myweather.network.ApiService
@@ -15,7 +14,7 @@ class HomeScreenRepository @Inject constructor(private val apiService: ApiServic
     fun getLocations(name:String):Single<Locations>{
         val baseUrl = "https://geocoding-api.open-meteo.com/v1/search"
 
-        val completeUrl = "$baseUrl?name=$name&count=10&language=en&format=json"
+        val completeUrl = "$baseUrl?name=$name&count=20&language=en&format=json"
         return apiService.searchLocation(completeUrl)
     }
 }

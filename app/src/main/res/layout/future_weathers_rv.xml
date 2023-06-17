@@ -8,43 +8,89 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/dateTV"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/dateTimeFuture"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/futureRVDate"
+            app:layout_constraintEnd_toEndOf="@+id/futureRVDate"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/futureRVDate"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/futureRVDate"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="16dp"
-            android:text="2023-05-04  14:22"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="12dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tempatureTV"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/tempatureFuture"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/futureWeatherTempature"
+            app:layout_constraintEnd_toEndOf="@+id/futureWeatherTempature"
+            app:layout_constraintHorizontal_bias="0.45"
+            app:layout_constraintStart_toStartOf="@+id/futureWeatherTempature" />
 
         <TextView
             android:id="@+id/futureWeatherTempature"
             android:layout_width="70dp"
             android:layout_height="0dp"
             android:layout_marginStart="25dp"
-            android:text="25 "
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/futureRVDate"
             app:layout_constraintStart_toEndOf="@+id/futureRVDate"
-            app:layout_constraintTop_toTopOf="@+id/futureRVDate" />
+            app:layout_constraintTop_toTopOf="@+id/futureRVDate"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/weatherTV"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/weatherFuture"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/futureRVAnimation"
+            app:layout_constraintEnd_toEndOf="@+id/futureRVAnimation"
+            app:layout_constraintHorizontal_bias="0.45"
+            app:layout_constraintStart_toStartOf="@+id/futureRVAnimation" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/futureRVAnimation"
             android:layout_width="70dp"
             android:layout_height="50dp"
-            android:layout_marginStart="25dp"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:layout_marginStart="45dp"
             app:layout_constraintBottom_toBottomOf="@+id/futureWeatherTempature"
             app:layout_constraintStart_toEndOf="@+id/futureWeatherTempature"
             app:layout_constraintTop_toTopOf="@+id/futureWeatherTempature"
+            app:layout_constraintVertical_bias="0.0"
             app:lottie_autoPlay="true"
             app:lottie_loop="true" />
 

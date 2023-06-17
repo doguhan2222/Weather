@@ -122,19 +122,22 @@ class HomeScreenViewmodel @Inject constructor(
     }
 
     fun fetchLocations() {
-        homeScreenRepository.getLocations(searchName.value.toString())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { result -> _locations.value = result },
-                { error ->
-                    Log.e(
-                        "HomeScreenViewmodelfetchLocations",
-                        "Error fetching locations: ${error.message}"
-                    )
-                }
-            )
-            .addTo(disposableLocations)
+        if(searchName.value != "" && searchName.isInitialized){
+            homeScreenRepository.getLocations(searchName.value.toString())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { result -> _locations.value = result },
+                    { error ->
+                        Log.e(
+                            "HomeScreenViewmodelfetchLocations",
+                            "Error fetching locations: ${error.message}"
+                        )
+                    }
+                )
+                .addTo(disposableLocations)
+        }
+
     }
 
 

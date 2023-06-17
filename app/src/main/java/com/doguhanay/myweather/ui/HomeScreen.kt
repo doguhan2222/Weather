@@ -1,12 +1,15 @@
 package com.doguhanay.myweather.ui
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -23,6 +26,7 @@ import com.doguhanay.myweather.viewmodels.HomeScreenViewmodel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 
 @AndroidEntryPoint
@@ -41,9 +45,15 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
     lateinit var searchRV: RecyclerView
     lateinit var favRV: RecyclerView
 
-    var cityName: String = ""
+    lateinit var cityName: String
     var lat2 = 0.0
     var long2 = 0.0
+    lateinit var searchKey: String
+    var count = 0
+    var date: String = ""
+    var time: String = ""
+    var code: Int = 0
+    lateinit var allKeys: Set<String>
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -93,12 +103,10 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_screen, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.homeScreenVM = viewModel
-        /*val editor1 = shared!!.edit()
-        editor1.clear()
-        editor1.apply()*/
 
 
         if (latitude != null && longitude != null) {
@@ -123,14 +131,12 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
         favLocationsAdapter = FavLocationsAdapter(shared!!, this)
 
         val allEntries: Map<String, *>? = shared!!.all
-        val count = allEntries?.size ?: 0
+        count = allEntries?.size ?: 0
         if (count > 0) {
             favLocationsAdapter!!.setFavLocList(allEntries!!.keys.toList())
         }
 
-        var date: String = ""
-        var time: String = ""
-        var code: Int = 0
+
 
         viewModel.resultvm.observe(viewLifecycleOwner) { weatherResults ->
             binding.cityNameTV.text = cityName
@@ -139,26 +145,21 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
             time = weatherResults.currentWeather!!.time!!.substring(11)
             binding.dateTimeTv.text = date + " : " + time
             code = weatherResults.currentWeather!!.weathercode!!
-            val searchKey = cityName
-            val allKeys: Set<String> = shared!!.all.keys
-            val count = allKeys?.size ?: 0
+            searchKey = cityName
+            allKeys = shared!!.all.keys
+            count = allKeys?.size ?: 0
             if (allKeys.contains(searchKey)) {
-                binding.addFavImageButton.visibility = View.INVISIBLE
-                binding.deleteFavImageButton.visibility = View.VISIBLE
+                changeFavButtonInvisible(binding)
                 if (count > 0) {
                     favLocationsAdapter!!.setFavLocList(allKeys!!.toList())
                 }
             } else {
-                binding.addFavImageButton.visibility = View.VISIBLE
-                binding.deleteFavImageButton.visibility = View.INVISIBLE
+                changeFavButtonVisible(binding)
                 if (count > 0) {
                     favLocationsAdapter!!.setFavLocList(allKeys!!.toList())
                 }
             }
-            if (code == 3) {
-                binding.animationView.setAnimation(R.raw.sunny)
-                binding.animationView.playAnimation()
-            }
+            checkWeatherCode(code)
             if (weatherResults.hourly != null) {
                 futureWeathersAdapter?.setList(weatherResults.hourly!!)
             }
@@ -166,40 +167,27 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
         }
 
         viewModel.searchedResultWeather.observe(viewLifecycleOwner) { searchedWeatherResult ->
+
             binding.cityNameTV.text = cityName
-            binding.temperatureTV.text = searchedWeatherResult.currentWeather!!.temperature.toString()
+            binding.temperatureTV.text =
+                searchedWeatherResult.currentWeather!!.temperature.toString()
             date = searchedWeatherResult.currentWeather!!.time!!.substring(0, 10)
             time = searchedWeatherResult.currentWeather!!.time!!.substring(11)
             binding.dateTimeTv.text = date + " : " + time
             code = searchedWeatherResult.currentWeather!!.weathercode!!
-            val searchKey = cityName
-            val allKeys: Set<String> = shared!!.all.keys
+            searchKey = cityName
+            allKeys = shared!!.all.keys
             if (allKeys.contains(searchKey)) {
-                binding.addFavImageButton.visibility = View.INVISIBLE
-                binding.deleteFavImageButton.visibility = View.VISIBLE
+                changeFavButtonInvisible(binding)
             } else {
-                binding.addFavImageButton.visibility = View.VISIBLE
-                binding.deleteFavImageButton.visibility = View.INVISIBLE
+                changeFavButtonVisible(binding)
             }
-            if (code == 3) {
-                binding.animationView.setAnimation(R.raw.sunny)
-                binding.animationView.playAnimation()
-            }
+            checkWeatherCode(code)
             if (searchedWeatherResult.hourly != null) {
                 futureWeathersAdapter?.setList(searchedWeatherResult.hourly!!)
             }
-            binding.searchBarLayout.visibility = View.VISIBLE
-            binding.imageButtonSearch.visibility = View.VISIBLE
-            binding.addFavImageButton.visibility = View.VISIBLE
-            binding.favPlacesListRv.visibility = View.VISIBLE
-            binding.cityNameTV.visibility = View.VISIBLE
-            binding.temperatureTV.visibility = View.VISIBLE
-            binding.animationView.visibility = View.VISIBLE
-            binding.futureWeatherDetailsRV.visibility = View.VISIBLE
-            binding.dateTimeTv.visibility = View.VISIBLE
-
-            binding.searchRV.visibility = View.GONE
-            binding.editTextSearch.text.clear()
+            changeVisible(binding)
+            clearEditText(binding)
         }
 
         viewModel.favResultWeather.observe(viewLifecycleOwner) { favLocationWeather ->
@@ -209,53 +197,29 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
             time = favLocationWeather.currentWeather!!.time!!.substring(11)
             binding.dateTimeTv.text = date + " : " + time
             code = favLocationWeather.currentWeather!!.weathercode!!
-            val searchKey = cityName
-            val allKeys: Set<String> = shared!!.all.keys
+            searchKey = cityName
+            allKeys = shared!!.all.keys
             if (allKeys.contains(searchKey)) {
-                binding.addFavImageButton.visibility = View.INVISIBLE
-                binding.deleteFavImageButton.visibility = View.VISIBLE
+                changeFavButtonInvisible(binding)
             } else {
-                binding.addFavImageButton.visibility = View.VISIBLE
-                binding.deleteFavImageButton.visibility = View.INVISIBLE
+                changeFavButtonVisible(binding)
             }
-            if (code == 3) {
-                binding.animationView.setAnimation(R.raw.sunny)
-                binding.animationView.playAnimation()
-            }
+            checkWeatherCode(code)
+
             if (favLocationWeather.hourly != null) {
                 futureWeathersAdapter?.setList(favLocationWeather.hourly!!)
             }
-            binding.searchBarLayout.visibility = View.VISIBLE
-            binding.imageButtonSearch.visibility = View.VISIBLE
-            binding.addFavImageButton.visibility = View.VISIBLE
-            binding.favPlacesListRv.visibility = View.VISIBLE
-            binding.cityNameTV.visibility = View.VISIBLE
-            binding.temperatureTV.visibility = View.VISIBLE
-            binding.animationView.visibility = View.VISIBLE
-            binding.futureWeatherDetailsRV.visibility = View.VISIBLE
-            binding.dateTimeTv.visibility = View.VISIBLE
-
-            binding.searchRV.visibility = View.GONE
-            binding.editTextSearch.text.clear()
+            changeVisible(binding)
+            clearEditText(binding)
         }
 
 
         viewModel.locations.observe(viewLifecycleOwner) { locationsResults ->
+            closeKeyboard()
             if (locationsResults != null) {
-                binding.searchBarLayout.visibility = View.INVISIBLE
-                binding.imageButtonSearch.visibility = View.INVISIBLE
-                binding.addFavImageButton.visibility = View.INVISIBLE
-                binding.favPlacesListRv.visibility = View.INVISIBLE
-                binding.cityNameTV.visibility = View.INVISIBLE
-                binding.temperatureTV.visibility = View.INVISIBLE
-                binding.animationView.visibility = View.INVISIBLE
-                binding.futureWeatherDetailsRV.visibility = View.INVISIBLE
-                binding.dateTimeTv.visibility = View.INVISIBLE
-                binding.addFavImageButton.visibility = View.INVISIBLE
-                binding.deleteFavImageButton.visibility = View.INVISIBLE
-
+                changeInvisible(binding)
                 locationsAdapter?.setList(locationsResults.results)
-                binding.searchRV.visibility = View.VISIBLE
+
             }
         }
 
@@ -264,10 +228,9 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
 
                 if (status == true) {
 
-                    binding.addFavImageButton.visibility = View.INVISIBLE
-                    binding.deleteFavImageButton.visibility = View.VISIBLE
+                    changeFavButtonInvisible(binding)
                     viewModel.addFavorite(lat2!!, long2!!)
-                    val allKeys: Set<String> = shared!!.all.keys
+                    allKeys = shared!!.all.keys
 
                     if (count >= 0) {
                         favLocationsAdapter!!.setFavLocList(allKeys!!.toList())
@@ -275,10 +238,9 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
                     }
                 } else {
 
-                    binding.addFavImageButton.visibility = View.VISIBLE
-                    binding.deleteFavImageButton.visibility = View.INVISIBLE
+                    changeFavButtonVisible(binding)
                     viewModel.deleteFavorite()
-                    val allKeys: Set<String> = shared!!.all.keys
+                    allKeys = shared!!.all.keys
                     if (count >= 0) {
                         favLocationsAdapter!!.setFavLocList(allKeys!!.toList())
 
@@ -290,6 +252,57 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
         return binding.root
     }
 
+    fun checkWeatherCode(code: Int) {
+        when (code) {
+            0, 1 -> {
+                binding.animationView.setAnimation(R.raw.sunny)
+                binding.animationView.playAnimation()
+            }
+
+            45, 48 -> {
+                binding.animationView.setAnimation(R.raw.fog)
+                binding.animationView.playAnimation()
+            }
+
+            51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82 -> {
+                binding.animationView.setAnimation(R.raw.rain)
+                binding.animationView.playAnimation()
+            }
+
+            71, 73, 75, 77, 85, 86 -> {
+                binding.animationView.setAnimation(R.raw.snow)
+                binding.animationView.playAnimation()
+            }
+
+            96, 99 -> {
+                binding.animationView.setAnimation(R.raw.lightning)
+                binding.animationView.playAnimation()
+            }
+
+            3 -> {
+                binding.animationView.setAnimation(R.raw.cloudy)
+                binding.animationView.playAnimation()
+            }
+
+            2 -> {
+                binding.animationView.setAnimation(R.raw.sun_cloudy)
+                binding.animationView.playAnimation()
+            }
+
+            95 -> {
+                binding.animationView.setAnimation(R.raw.windy)
+                binding.animationView.playAnimation()
+            }
+
+        }
+
+    }
+
+    fun closeKeyboard() {
+        val imm =
+            requireView().context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -313,23 +326,55 @@ class HomeScreen : Fragment(), RecyclerViewClickListener {
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.searchBarLayout.visibility == View.INVISIBLE) {
-                    binding.searchBarLayout.visibility = View.VISIBLE
-                    binding.imageButtonSearch.visibility = View.VISIBLE
-                    binding.addFavImageButton.visibility = View.VISIBLE
-                    binding.favPlacesListRv.visibility = View.VISIBLE
-                    binding.cityNameTV.visibility = View.VISIBLE
-                    binding.temperatureTV.visibility = View.VISIBLE
-                    binding.animationView.visibility = View.VISIBLE
-                    binding.futureWeatherDetailsRV.visibility = View.VISIBLE
-                    binding.dateTimeTv.visibility = View.VISIBLE
-
-                    binding.searchRV.visibility = View.GONE
+                    changeVisible(binding)
                     isEnabled = true // Disable the callback to allow subsequent back button presses
                 }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
+    }
+
+    fun changeVisible(binding: FragmentHomeScreenBinding) {
+        binding.searchBarLayout.visibility = View.VISIBLE
+        binding.imageButtonSearch.visibility = View.VISIBLE
+        binding.addFavImageButton.visibility = View.VISIBLE
+        binding.favPlacesListRv.visibility = View.VISIBLE
+        binding.cityNameTV.visibility = View.VISIBLE
+        binding.temperatureTV.visibility = View.VISIBLE
+        binding.animationView.visibility = View.VISIBLE
+        binding.futureWeatherDetailsRV.visibility = View.VISIBLE
+        binding.dateTimeTv.visibility = View.VISIBLE
+        binding.searchRV.visibility = View.INVISIBLE
+    }
+
+    fun changeInvisible(binding: FragmentHomeScreenBinding) {
+        binding.searchBarLayout.visibility = View.INVISIBLE
+        binding.imageButtonSearch.visibility = View.INVISIBLE
+        binding.addFavImageButton.visibility = View.INVISIBLE
+        binding.favPlacesListRv.visibility = View.INVISIBLE
+        binding.cityNameTV.visibility = View.INVISIBLE
+        binding.temperatureTV.visibility = View.INVISIBLE
+        binding.animationView.visibility = View.INVISIBLE
+        binding.futureWeatherDetailsRV.visibility = View.INVISIBLE
+        binding.dateTimeTv.visibility = View.INVISIBLE
+        binding.addFavImageButton.visibility = View.INVISIBLE
+        binding.deleteFavImageButton.visibility = View.INVISIBLE
+        binding.searchRV.visibility = View.VISIBLE
+    }
+
+    fun clearEditText(binding: FragmentHomeScreenBinding) {
+        binding.editTextSearch.text.clear()
+    }
+
+    fun changeFavButtonVisible(binding: FragmentHomeScreenBinding) {
+        binding.addFavImageButton.visibility = View.VISIBLE
+        binding.deleteFavImageButton.visibility = View.INVISIBLE
+    }
+
+    fun changeFavButtonInvisible(binding: FragmentHomeScreenBinding) {
+        binding.addFavImageButton.visibility = View.INVISIBLE
+        binding.deleteFavImageButton.visibility = View.VISIBLE
     }
 
 }

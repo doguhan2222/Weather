@@ -36,24 +36,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginRight="40dp"
-                android:hint="Search"
-                android:text="@={homeScreenVM.searchName}"
+                android:hint="@string/searchHint"
                 android:maxLength="20"
                 android:paddingLeft="10dp"
                 android:paddingRight="40dp"
-                android:textColor="#6AF500"
+                android:text="@={homeScreenVM.searchName}"
+                android:textColor="#FF0000"
                 android:textColorHint="#FF0000"
                 android:textSize="19sp" />
-<!--            android:text="@{homeScreenVM.searchName}"-->
+
             <ImageButton
                 android:id="@+id/imageButtonSearch"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:clickable="true"
-                android:onClick="@{() -> homeScreenVM.fetchLocations()}"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@null"
+                android:clickable="true"
+                android:onClick="@{() -> homeScreenVM.fetchLocations()}"
                 android:src="@drawable/search_image" />
 
         </RelativeLayout>
@@ -63,25 +63,15 @@
             android:id="@+id/favPlacesListRv"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:orientation="horizontal"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchBarLayout" />
 
-        <!-- item list buton fav için
-       <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/circle_fav_button"
-            android:text="1"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            tools:layout_editor_absoluteX="24dp"
-            tools:layout_editor_absoluteY="92dp" />-->
 
         <TextView
             android:id="@+id/cityNameTV"
@@ -102,23 +92,26 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:background="@null"
-            android:visibility="invisible"
-            android:src="@drawable/not_fav_button"
             android:onClick="@{() -> homeScreenVM.addFavVM()}"
+            android:src="@drawable/not_fav_button"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/cityNameTV"
             app:layout_constraintStart_toEndOf="@+id/cityNameTV"
             app:layout_constraintTop_toTopOf="@+id/cityNameTV"
             app:layout_constraintVertical_bias="0.0" />
+
         <ImageButton
             android:id="@+id/deleteFavImageButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:background="@null"
-            android:visibility="invisible"
-            android:src="@drawable/fav_button"
             android:onClick="@{() -> homeScreenVM.deleteFavVM()}"
+            android:src="@drawable/fav_button"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/cityNameTV"
             app:layout_constraintStart_toEndOf="@+id/cityNameTV"
             app:layout_constraintTop_toTopOf="@+id/cityNameTV"
@@ -128,6 +121,8 @@
             android:id="@+id/animationView"
             android:layout_width="0dp"
             android:layout_height="100dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
             android:layout_marginStart="32dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="32dp"
@@ -137,13 +132,6 @@
             app:layout_constraintTop_toBottomOf="@+id/cityNameTV"
             app:lottie_autoPlay="true"
             app:lottie_loop="true" />
-        <!--<com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:lottie_rawRes="@raw/animation"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"/>-->
 
 
         <TextView
@@ -154,10 +142,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:paddingTop="7dp"
-            android:text="25 C"
             android:textAlignment="center"
             android:textColor="#FF0000"
-            android:textSize="25sp"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="@+id/animationView"
             app:layout_constraintStart_toStartOf="@+id/animationView"
             app:layout_constraintTop_toBottomOf="@+id/animationView" />
@@ -168,10 +155,9 @@
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:paddingTop="7dp"
-            android:text="2023-05-06 14:58"
             android:textAlignment="center"
             android:textColor="#FF0000"
-            android:textSize="17sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/temperatureTV"
             app:layout_constraintHorizontal_bias="0.468"
             app:layout_constraintStart_toStartOf="@+id/temperatureTV"
