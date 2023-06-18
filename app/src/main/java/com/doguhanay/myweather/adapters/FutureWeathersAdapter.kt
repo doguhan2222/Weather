@@ -81,14 +81,11 @@ class FutureWeathersAdapter () : RecyclerView.Adapter<FutureWeathersAdapter.Weat
                 }
 
             }
-           /* if ( code.equals("0")){
-                futureWeatherListBinding.futureRVAnimation.setAnimation(R.raw.sunny)
-                futureWeatherListBinding.futureRVAnimation.playAnimation()
-            }
-*/
+
 
 
         }
+
     }
 
 }

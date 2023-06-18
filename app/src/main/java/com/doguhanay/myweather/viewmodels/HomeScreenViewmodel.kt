@@ -74,6 +74,7 @@ class HomeScreenViewmodel @Inject constructor(
             .addTo(disposablesWeathers)
     }
 
+
     fun fetchWeather(lat: Double, long: Double) {
         homeScreenRepository.getWeather(lat, long)
             .subscribeOn(Schedulers.io())
