@@ -9,7 +9,8 @@ Used Technologies 📱💻
 * Retrofit
 * Lottie
 * SharedPreferences
-* For Weather API https://open-meteo.com
+* For Weather API [https://open-meteo.com](https://open-meteo.com/en/docs)
+* For Geocoding API https://open-meteo.com/en/docs/geocoding-api
 
 
 
