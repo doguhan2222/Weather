@@ -10,7 +10,7 @@ Used Technologies 📱💻
 * Lottie
 * SharedPreferences
 * For Weather API [https://open-meteo.com](https://open-meteo.com/en/docs)
-* For Geocoding API https://open-meteo.com/en/docs/geocoding-api
+* For Geocoding API https://open-meteo.com/en/docs/geocoding-api 
 
 
 
